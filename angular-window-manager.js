@@ -28,12 +28,14 @@ angular.module('ngWindowManager',[])
 		replace: true,
 		transclude: true,
 		scope: {
-			title: '@',
-			close: '=',
-			open: '=',
-			selectwindow: '=',
-			maximize: '=',
-			restore: '=',
+			title: '=',
+			close: '&',
+			open: '&',
+			selectwindow: '&',
+			maximize: '&',
+			restore: '&',
+			resized: '&',
+			moved: '&',
 			options: '@',
 			maximizable: '@',
 			closeable: '@',
@@ -80,7 +82,7 @@ angular.module('ngWindowManager',[])
 				},50);
 
 				if (scope.close){
-					scope.close(winHandler);
+					scope.close({winHandler: winHandler});
 				}
 			};
 		
@@ -222,19 +224,26 @@ angular.module('ngWindowManager',[])
 				if (x) {element.css('left',x +'px');}
 				if(y) {element.css('top',y + 'px');}
 
+				if (scope.moved){
+					scope.moved({winHandler: winHandler, x: x, y: y});	
+				}
 			};
 
 			//set the new size of the element
 			winHandler.resize = function (width,height) {
 				if (width) {element.css ('width', width + 'px');}
 				if (height) {element.css ('height', height + 'px');}
+
+				if (scope.resized){
+					scope.resized({winHandler: winHandler, width: width, height: height});	
+				}
 			};
 
 			//Move the current window to the highest position
 			winHandler.selectWindow = function (){
 				parentWindow.topZ = parentWindow.topZ +1;
 				element.css ('z-index', parentWindow.topZ);
-				if (scope.selectwindow) { scope.selectwindow(winHandler); }
+				if (scope.selectwindow) { scope.selectwindow({winHandler: winHandler}); }
 			};
 			
 			winHandler.getMaximizeToElement = function() {
@@ -293,7 +302,7 @@ angular.module('ngWindowManager',[])
 				},500);
 				
 				if (scope.maximize){
-					scope.maximize(winHandler);	
+					scope.maximize({winHandler: winHandler});	
 				}
 				
 			};
@@ -323,7 +332,7 @@ angular.module('ngWindowManager',[])
 				
 				//Execute restore method if it's provided
 				if (scope.restore){
-					scope.restore(winHandler);	
+					scope.restore({winHandler: winHandler});	
 				}
 				
 				//Removes the element some time ago
@@ -388,7 +397,7 @@ angular.module('ngWindowManager',[])
 				setTimeout (function (){
 					element.removeClass ('opening');
 					if (scope.open) {
-						scope.open(winHandler);
+						scope.open({winHandler: winHandler})
 					}
 				},400);
 			},50);
