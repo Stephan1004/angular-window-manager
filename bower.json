@@ -1,8 +1,9 @@
 {
   "name": "angular-window-manager",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "authors": [
-    "sinmsinm <alex.balleste@gmail.com>"
+    "sinmsinm <alex.balleste@gmail.com>",
+    "Stephan1004 <Stephan1004@gmx.de>"
   ],
   "description": "This is an angular directive to show content wrapped in windows.",
   "main": "angular-window-manager.js",
